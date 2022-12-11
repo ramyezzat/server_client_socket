@@ -52,5 +52,5 @@ docker run -dit --name client --network server_client_net ramyezzateric/client_s
 write-host "`ninspecting network bridge server_client_net after connections"
 docker network inspect server_client_net
 
-Write-Host "`nPress any key to exit shell..."
+write-Host "`nPress any key to exit shell..."
 $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
