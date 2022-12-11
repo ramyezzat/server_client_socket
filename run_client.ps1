@@ -1,3 +1,4 @@
+<#
 MIT License
 
 Copyright (c) 2022 Ramy Ezzat - Ericsson Eesti AS
@@ -19,3 +20,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+#>
+
+write-host "`nrunning client container"
+docker start client
+docker exec -it client bash
+
+write-Host "`nPress any key to exit shell..."
+$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
