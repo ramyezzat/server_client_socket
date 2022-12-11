@@ -12,13 +12,13 @@ The server can have up to two connection of clients.
 
 ## 4 - steps
     a- on windows
-        1- run install.ps1
-        2- run run_server.ps1
-        3- run run_client.ps1 (another Powershell terminal)
+        1- run windows_os/install.ps1
+        2- run windows_os/run_server.ps1
+        3- run windows_os/run_client.ps1 (another Powershell terminal)
     b- on linux
-        1- run install.sh
-        2- run run_server.sh
-        3- run run_client.sh (another bash terminal)
+        1- run linux_os/install.sh
+        2- run linux_os/run_server.sh
+        3- run linux_os/run_client.sh (another bash terminal)
 
 ## 5 - Installation
 - upon running the installation app "install.ps1" the following steps takes place
@@ -26,8 +26,8 @@ The server can have up to two connection of clients.
   - docker pulls latest server image ramyezzateric/server_socket
   - docker pulls latest client image ramyezzateric/client_socket
   - docker a network "server_client_net" to bridge the two containers to be created
-  - docker creates a container from image ramyezzateric/server_socet, name it "server" on the network bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
-  - docker creates a container from image ramyezzateric/client_socet, name it "client" on the network bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
+  - docker creates a container from image ramyezzateric/server_socket, name it "server" on the network bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
+  - docker creates a container from image ramyezzateric/client_socket, name it "client" on the network bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
 ## 6 - Run process
 After installation run the server and client in either way
   ### 6.1 - run both run_server.ps1 and run_client.ps1
