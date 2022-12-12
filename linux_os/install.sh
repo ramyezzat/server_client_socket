@@ -26,31 +26,31 @@ COMMENT
 # chmod u+x install.sh
 
 #docker pulls latest server image ramyezzateric/server_socket
-echo $"\ndownloading server_socket:latest"
+echo $'\ndownloading server_socket:latest'
 docker pull ramyezzateric/server_socket:latest
 
 #docker pulls latest client image ramyezzateric/client_socket
-echo $"\ndownloading client_socket:latest"
+echo $'\ndownloading client_socket:latest'
 docker pull ramyezzateric/client_socket:latest
 
 #docker a network "server_client_net" to bridge the two containers to be created
-echo $"\ncreating network bridge server_client_net"
+echo $'\ncreating network bridge server_client_net'
 docker network create --driver bridge server_client_net
 
 #docker inspect the network
-echo $"\ninspecting network bridge server_client_net before connections"
+echo $'\ninspecting network bridge server_client_net before connections'
 docker network inspect server_client_net
 
 #docker creates a container from image ramyezzateric/server_socket, name it "server" on the network
 #bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
-echo $"\nrunning container server_socket"
+echo $'\nrunning container server_socket'
 docker run -dit --name server --network server_client_net ramyezzateric/server_socket:latest bash
 
 #docker creates a container from image ramyezzateric/client_socet, name it "client" on the network
 #bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
-echo $"\nrunning container client_socket"
+echo $'\nrunning container client_socket'
 docker run -dit --name client --network server_client_net ramyezzateric/client_socket:latest bash
 
 #docker inspect the network
-echo $"\ninspecting network bridge server_client_net after connections"
+echo $'\ninspecting network bridge server_client_net after connections'
 docker network inspect server_client_net

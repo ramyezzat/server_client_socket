@@ -25,6 +25,6 @@ COMMENT
 #! usr/bin/bash
 # chmod u+x run_client.sh
 
-echo $"\nrunning client container"
+echo $'\nrunning client container'
 docker start client
 docker exec -it client bash

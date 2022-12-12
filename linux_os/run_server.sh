@@ -25,6 +25,6 @@ COMMENT
 #! usr/bin/bash
 # chmod u+x run_server.sh
 
-echo $"\nrunning server container"
+echo $'\nrunning server container'
 docker start server
 docker exec -it server bash
