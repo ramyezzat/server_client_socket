@@ -29,7 +29,9 @@ that is running a .NET based client program. The server can have up to two conne
 upon running the installation app "install.ps1" or "install.sh" the following steps takes place
         ** please note that installation takes around one-three minutes to complete
   - docker pulls latest server image ramyezzateric/server_socket
+    - https://hub.docker.com/repository/docker/ramyezzateric/server_socket
   - docker pulls latest client image ramyezzateric/client_socket
+    - https://hub.docker.com/repository/docker/ramyezzateric/client_socket
   - docker a network "server_client_net" to bridge the two containers to be created
   - docker creates a container from image ramyezzateric/server_socket, name it "server" on the network bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
   - docker creates a container from image ramyezzateric/client_socket, name it "client" on the network bridge "server_client_net" (in this sense no need define IP as it can vary in different machines)
