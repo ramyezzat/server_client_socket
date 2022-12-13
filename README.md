@@ -70,4 +70,4 @@ run two entities of bash or cmd or Powershell and run:
       - $dotnet run
 ## 7 - Result
 - Write a message onto the server side, press enter and watch the client side echoes the message
-- To exit the programs write "bye" into the server and both programs will exit
+- To exit the programs press escape key into the server and both programs will exit
