@@ -35,7 +35,7 @@ docker pull ramyezzateric/client_socket:latest
 
 #docker a network "server_client_net" to bridge the two containers to be created
 echo $'\ncreating network bridge server_client_net'
-docker network create --driver bridge server_client_net
+docker network create --driver=bridge --subnet=182.0.1.1/16 server_client_net
 
 #docker inspect the network
 echo $'\ninspecting network bridge server_client_net before connections'
