@@ -38,8 +38,10 @@ using System.Net.Sockets;
 using System.IO;
 using System.Text;
 
-namespace TcpEchoClient{
-	public class TcpEchoServer{
+namespace TcpEchoClient
+{
+	public class TcpEchoServer
+	{
 		public static void Main(){
 			// defining used variables
 			const int port = 1024;
@@ -47,20 +49,25 @@ namespace TcpEchoClient{
 			byte[] bytes_to_read;
 			int bytes_read;
 			string read_string = "";
-			try{
+			try
+			{
 				TcpClient client = new TcpClient(SERVER_IP, port); // client connections for TCP network services
-				while(true){
+				while(true)
+				{
 					NetworkStream nwStream = client.GetStream(); // Returns the NetworkStream used to send and receive data
 					//---read server text---
 					bytes_to_read = new byte[client.ReceiveBufferSize]; // assign new byte to read with available buffer length
-					bytes_read = nwStream.Read(bytes_to_read, 0, client.ReceiveBufferSize); // Reads data from the NetworkStream and stores it to a byte array.
+					// Reads data from the NetworkStream and stores it to a byte array.
+					bytes_read = nwStream.Read(bytes_to_read, 0, client.ReceiveBufferSize);
 					read_string = Encoding.ASCII.GetString(bytes_to_read, 0, bytes_read); // decode ASCII message
-					if (read_string == ""){
+					if (read_string == "")
+					{
 						Console.WriteLine("connection terminated\n");
 						break;
 					}
 					Console.Write(read_string);
-					if (read_string == "bye"){
+					if (read_string == "bye")
+					{
 						Console.WriteLine("bye");
 						Console.WriteLine("connection closed\n");
 						break;
@@ -68,7 +75,8 @@ namespace TcpEchoClient{
 				}
 				client.Close();
 			}
-			catch (SocketException){ // handle socket exception
+			catch (SocketException)
+			{ // handle socket exception
 				Console.WriteLine("Server socket connection refused");
 			} 
 		}
