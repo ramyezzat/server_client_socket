@@ -38,7 +38,7 @@ using System.Net.Sockets;
 using System.IO;
 using System.Text;
 
-namespace TcpEchoClient:
+namespace TcpEchoClient;
 public class TcpEchoServer
 {
 	public static void Main(){
