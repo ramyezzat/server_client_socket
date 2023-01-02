@@ -38,47 +38,54 @@ using System.Net.Sockets;
 using System.IO;
 using System.Text;
 
-namespace TcpEchoClient
+namespace TcpEchoClient:
+public class TcpEchoServer
 {
-	public class TcpEchoServer
-	{
-		public static void Main(){
-			// defining used variables
-			const int port = 1024;
-			const string SERVER_IP = "server";
-			byte[] bytes_to_read;
-			int bytes_read;
-			string read_string = "";
-			try
+	public static void Main(){
+		// defining used variables
+		const int port = 1024;
+		const string SERVER_IP = "server";
+		byte[] bytes_to_read;
+		int bytes_read;
+		string read_string = "";
+		try
+		{
+			TcpClient client = new TcpClient(SERVER_IP, port); // client connections for TCP network services
+			while(true)
 			{
-				TcpClient client = new TcpClient(SERVER_IP, port); // client connections for TCP network services
-				while(true)
+				NetworkStream nwStream = client.GetStream(); // Returns the NetworkStream used to send and receive data
+				//---read server text---
+				/*
+				suggested to replace the following part
+				// assign new byte to read with available buffer length
+				bytes_to_read = new byte[client.ReceiveBufferSize]; 
+				// suggested assignation on stack rather than heap allocation
+				by using Span and stackalloc keyword we provide a type-safe and memory-safe representation of a contiguous 
+				region of arbitrary memory
+				*/
+				Span<byte> bytes_to_read = stackalloc byte[client.ReceiveBufferSize];
+				
+				// Reads data from the NetworkStream and stores it to a byte array.
+				bytes_read = nwStream.Read(bytes_to_read, 0, client.ReceiveBufferSize);
+				read_string = Encoding.ASCII.GetString(bytes_to_read, 0, bytes_read); // decode ASCII message
+				if (read_string == "")
 				{
-					NetworkStream nwStream = client.GetStream(); // Returns the NetworkStream used to send and receive data
-					//---read server text---
-					bytes_to_read = new byte[client.ReceiveBufferSize]; // assign new byte to read with available buffer length
-					// Reads data from the NetworkStream and stores it to a byte array.
-					bytes_read = nwStream.Read(bytes_to_read, 0, client.ReceiveBufferSize);
-					read_string = Encoding.ASCII.GetString(bytes_to_read, 0, bytes_read); // decode ASCII message
-					if (read_string == "")
-					{
-						Console.WriteLine("connection terminated\n");
-						break;
-					}
-					Console.Write(read_string);
-					if (read_string == "bye")
-					{
-						Console.WriteLine("bye");
-						Console.WriteLine("connection closed\n");
-						break;
-					}
+					Console.WriteLine("connection terminated\n");
+					break;
 				}
-				client.Close();
+				Console.Write(read_string);
+				if (read_string == "bye")
+				{
+					Console.WriteLine("bye");
+					Console.WriteLine("connection closed\n");
+					break;
+				}
 			}
-			catch (SocketException)
-			{ // handle socket exception
-				Console.WriteLine("Server socket connection refused");
-			} 
+			client.Close();
 		}
+		catch (SocketException)
+		{ // handle socket exception
+			Console.WriteLine("Server socket connection refused");
+		} 
 	}
 }
