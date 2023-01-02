@@ -50,49 +50,54 @@ loop_condition = Event()
 conn = None
 
 
-def run_server():
-    """
-    @brief function that initiate and run server forever until bye word
-    @param None
-    @return None
-    """
-    try:
-        loop_condition.set()
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:  # creates a new socket
-            conn = None # defining conn
-            orig_settings = termios.tcgetattr(sys.stdin) #terminal settings
-            tty.setcbreak(sys.stdin) #tty terminal
-            server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,
-                                     1)  # set the value of the given socket option
-            server_socket.bind((host, port))  # bind the socket to address
-            server_socket.listen(2)  # Enable a server to accept connections
-            conn, addr = server_socket.accept()  # Accept a connection
-            print("Connection from: " + str(addr))
-            print("press escape to exit...")
-            while loop_condition.is_set() or not message_queue.empty():
-                x = sys.stdin.read(1)[0] #read character
-                if x != chr(27): # check if input is escape
-                    message_queue.put(x)
-                    print(x, end="", flush=True)
-                else:
-                    loop_condition.clear()
-                if not message_queue.empty():
-                    conn.send(message_queue.get().encode("utf-8"))  # send data entered by user encoded into
-                time.sleep(1 / 50)
-            print("\nexiting")
-        conn.close()  # mark the socket closed - double check besides with statement
-    except KeyboardInterrupt as error:  # handling KeyboardInterruption error ctrl+c
-        print("  Exiting  ")
+class Server:
+    def __init__(self):
+        self.run_server()
 
-    except BrokenPipeError as error:  # handling BrockenPipeError if client terminate
-        print(error)
-        print("seems that client exited")
 
-    finally:
-        if conn:
-            conn.close()
-        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, orig_settings) # restore terminal settings
+    def run_server(self):
+        """
+        @brief function that initiate and run server forever until bye word
+        @param None
+        @return None
+        """
+        try:
+            loop_condition.set()
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:  # creates a new socket
+                conn = None # defining conn
+                orig_settings = termios.tcgetattr(sys.stdin) #terminal settings
+                tty.setcbreak(sys.stdin) #tty terminal
+                server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,
+                                         1)  # set the value of the given socket option
+                server_socket.bind((host, port))  # bind the socket to address
+                server_socket.listen(2)  # Enable a server to accept connections
+                conn, addr = server_socket.accept()  # Accept a connection
+                print("Connection from: " + str(addr))
+                print("press escape to exit...")
+                while loop_condition.is_set() or not message_queue.empty():
+                    x = sys.stdin.read(1)[0] #read character
+                    if x != chr(27): # check if input is escape
+                        message_queue.put(x)
+                        print(x, end="", flush=True)
+                    else:
+                        loop_condition.clear()
+                    if not message_queue.empty():
+                        conn.send(message_queue.get().encode("utf-8"))  # send data entered by user encoded into
+                    time.sleep(1 / 50)
+                print("\nexiting")
+            conn.close()  # mark the socket closed - double check besides with statement
+        except KeyboardInterrupt as error:  # handling KeyboardInterruption error ctrl+c
+            print("  Exiting  ")
+
+        except BrokenPipeError as error:  # handling BrockenPipeError if client terminate
+            print(error)
+            print("seems that client exited")
+
+        finally:
+            if conn:
+                conn.close()
+            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, orig_settings) # restore terminal settings
 
 
 if __name__ == "__main__":
-    run_server()
+    s = Server()
